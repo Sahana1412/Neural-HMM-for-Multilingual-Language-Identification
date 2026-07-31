@@ -454,43 +454,7 @@ where $p_\theta(o_t | s_t = j) = \text{softmax}(f_\theta(\text{emb}(o_t), s_t))$
 - **HMM Fundamentals**: Rabiner (1989) - "A tutorial on hidden Markov models and selected applications"
 - **Neural-HMM**: Wiseman et al. (2017) - "Learning Neural Sequence Models from Partial Observations"
 
-## Citation
 
-If you use this work in research, please cite:
-
-```bibtex
-@software{neural_hmm_langid_2024,
-  title={Neural-HMM for Multilingual Language Identification: 
-         A Comparative Study of Markov Chain, Hidden Markov Model, 
-         and Neural-HMM Approaches},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/yourusername/neural-hmm-lang-id}
-}
-```
-
-## Limitations & Future Work
-
-### Limitations
-- Fixed to 14 European languages; multilingual code-switching not addressed
-- Character-level only; morphological features excluded
-- Single-document classification; context-insensitive
-- Neural-HMM limited to unidirectional (future work: bidirectional)
-
-### Future Work
-- Bidirectional Neural-HMM with attention
-- Mixture-of-experts for code-switching
-- Byte-pair encoding (BPE) vocabulary
-- Multilingual transfer learning
-- Integration with large language models (LLM-in-the-loop)
-
-## License
-
-MIT
-
-## Contact
-
-For questions or issues, please open a GitHub issue or contact the maintainers.
 
 ---
 
