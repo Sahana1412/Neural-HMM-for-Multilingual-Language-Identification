@@ -1,0 +1,46 @@
+project:
+  name: "neural-hmm-lang-id"
+  seed: 42
+  device: "cuda"  # "cuda" or "cpu"
+  n_runs: 3  # Multiple random seeds for robustness
+  verbose: true
+
+dataset:
+  # 14 European languages from WiLI-2018
+  languages: [cat, dan, deu, eng, spa, fin, fra, isl, ita, nld, nob, por, ron, swe]
+  vocab_size: 84
+  max_seq_length: 300
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+
+  # Noise injection for robustness testing
+  apply_noise_to_eval: true
+  noise_config:
+    # Probability of each transformation applied to NoisyEval
+    accent_strip_prob: 0.1      # Remove diacritics
+    random_delete_prob: 0.05    # Delete random characters
+    random_insert_prob: 0.05    # Insert random characters
+    char_substitute_prob: 0.1   # Substitute with similar/random char
+    truncate_prob: 0.05         # Truncate sequence
+    lowercase_prob: 0.0         # Convert to lowercase
+
+preprocessing:
+  normalize_unicode: true
+  preserve_accents_clean_eval: true
+  lowercase: false
+  remove_punctuation: false
+  char_coverage: 0.99  # Minimum character coverage for rare chars
+
+paths:
+  data_dir: "data"
+  output_dir: "outputs"
+  checkpoint_dir: "outputs/checkpoints"
+  metrics_dir: "outputs/metrics"
+  plots_dir: "outputs/plots"
+  cache_dir: ".cache"
+
+logging:
+  level: "INFO"  # "DEBUG", "INFO", "WARNING", "ERROR"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "outputs/experiment.log"
