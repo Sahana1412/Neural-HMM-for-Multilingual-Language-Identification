@@ -1,0 +1,25 @@
+model_name: "markov_chain"
+
+markov_chain:
+  n_gram_order: 2  # 1-4; test all in ablation
+  smoothing_method: "laplace"  # "laplace" or "kneser_ney"
+  
+  # Laplace (add-k) smoothing
+  laplace_alpha: 1.0
+  
+  # Kneser-Ney smoothing parameters
+  kneser_ney:
+    discount: 0.75
+    lambda_weight: 0.5
+
+training:
+  batch_size: 512  # For efficient stats computation
+  num_workers: 4
+  mixed_precision: false
+
+inference:
+  return_log_probs: true
+  compute_confidence: true
+
+# Inherit from default.yaml
+defaults_config: "config/default.yaml"
