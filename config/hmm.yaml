@@ -1,0 +1,33 @@
+model_name: "hmm"
+
+hmm:
+  n_hidden_states: 8  # 4, 8, 12, 16 in ablation
+  initialization: "uniform"  # "uniform" or "kmeans"
+  use_log_space: true  # Numerical stability
+  
+  # Smoothing
+  smoothing_method: "laplace"
+  smoothing_alpha: 1.0
+  
+  # Baum-Welch training
+  max_iterations: 100
+  convergence_threshold: 1e-4
+  compute_likelihood: true
+
+training:
+  batch_size: 32
+  num_workers: 2
+  learning_method: "baum_welch"
+
+inference:
+  algorithm: "forward"  # "forward" or "viterbi"
+  return_path: false
+  use_log_space: true
+
+optimization:
+  early_stopping: true
+  patience: 10
+  monitor_metric: "val_loss"
+
+# Inherit from default.yaml
+defaults_config: "config/default.yaml"
