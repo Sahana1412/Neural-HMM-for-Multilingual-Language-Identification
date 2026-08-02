@@ -1,0 +1,58 @@
+model_name: "neural_hmm"
+
+neural_hmm:
+  # Architecture
+  embedding_dim: 64  # 16, 32, 64, 128 in ablation
+  n_hidden_states: 8
+  hidden_dim: 128
+  dropout: 0.2
+  use_bilstm: true
+  bilstm_hidden: 128
+  n_layers: 2
+  
+  # Initialization
+  embedding_init: "normal"
+  init_std: 0.02
+
+training:
+  batch_size: 32
+  num_workers: 2
+  epochs: 100
+  learning_rate: 1e-3
+  lr_scheduler: "cosine"  # "cosine", "exponential", "linear"
+  warmup_steps: 100
+  
+  # Optimization
+  optimizer: "adamw"  # "adam" or "adamw"
+  weight_decay: 1e-5
+  gradient_clip_norm: 1.0
+  
+  # Loss & regularization
+  loss_function: "nll"  # Negative log-likelihood via forward algorithm
+  label_smoothing: 0.0
+  
+  # Numerical stability
+  use_log_space: true
+  log_space_epsilon: 1e-10
+  
+  # Early stopping
+  early_stopping: true
+  patience: 15
+  monitor_metric: "val_loss"
+  
+  # Checkpointing
+  save_best: true
+  save_last: true
+  save_frequency: 5  # Save every N epochs
+  
+  # Mixed precision training
+  mixed_precision: true  # fp16 if available
+
+inference:
+  algorithm: "forward"  # "forward" or "viterbi"
+  batch_size: 64
+  return_probabilities: true
+  use_log_space: true
+
+# Inherit from default.yaml
+defaults_config: "config/default.yaml"
