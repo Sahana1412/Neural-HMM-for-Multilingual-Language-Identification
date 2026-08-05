@@ -291,6 +291,67 @@ class NeuralHMMLangID:
             lang: NeuralHMM(vocab_size, n_states, embedding_dim).to(self.device)
             for lang in languages
         }
+        
+    def train(
+        self,
+        examples: list[dict],
+        language_key: str = "language",
+        epochs: int = 5,
+        batch_size: int = 32,
+        lr: float = 1e-3
+    ) -> None:
+        """Train per-language Neural-HMM models.
+        
+        Args:
+            examples: List of training examples
+            language_key: Key containing language label
+            epochs: Number of training epochs
+            batch_size: Training batch size
+            lr: Learning rate
+        """
+        from torch.utils.data import DataLoader
+        
+        def collate_fn(batch):
+            seqs = [torch.tensor(ex["char_ids"], dtype=torch.long) for ex in batch]
+            lengths = torch.tensor([len(s) for s in seqs], dtype=torch.long)
+            padded = torch.nn.utils.rnn.pad_sequence(seqs, batch_first=True)
+            return padded, lengths
+            
+        # Group examples by language
+        by_lang = {}
+        for example in examples:
+            lang = example[language_key]
+            if lang not in by_lang:
+                by_lang[lang] = []
+            by_lang[lang].append(example)
+            
+        for lang, lang_examples in by_lang.items():
+            if lang not in self.models:
+                continue
+                
+            logger.info(f"Training Neural-HMM for {lang} ({len(lang_examples)} examples)")
+            model = self.models[lang]
+            model.train()
+            
+            optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+            dataloader = DataLoader(
+                lang_examples,
+                batch_size=batch_size,
+                shuffle=True,
+                collate_fn=collate_fn
+            )
+            
+            for epoch in range(epochs):
+                for padded, lengths in dataloader:
+                    padded = padded.to(self.device)
+                    lengths = lengths.to(self.device)
+                    
+                    optimizer.zero_grad()
+                    log_likelihood, _ = model(padded, lengths)
+                    loss = -log_likelihood.mean()
+                    
+                    loss.backward()
+                    optimizer.step()
     
     def predict(self, char_ids: list[int]) -> Tuple[str, float]:
         """Predict language for sequence.
