@@ -22,7 +22,7 @@ The study evaluates all approaches on the WiLI-2018 multilingual dataset (14 Eur
 - ✅ **Production Quality**: Type hints, docstrings, unit tests, Black/Ruff formatting
 
 <p align="center">
-  <img src="images/screenshot.png" alt="Project Screenshot" width="600">
+  <img src="images/System architechture.png" alt="System Architechture" width="600">
 </p>
 
 ## Project Structure
