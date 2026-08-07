@@ -21,6 +21,8 @@ The study evaluates all approaches on the WiLI-2018 multilingual dataset (14 Eur
 - ✅ **GPU Support**: Neural-HMM with CUDA acceleration and mixed precision training
 - ✅ **Production Quality**: Type hints, docstrings, unit tests, Black/Ruff formatting
 
+![Project Screenshot](images/System architechture.png)
+
 ## Project Structure
 
 ```
